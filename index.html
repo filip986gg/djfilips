@@ -3,71 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <title>DJFilips • Serwer Minecraft</title>
-  <meta name="description" content="Oficjalna strona serwera Minecraft DJFilips">
+
+  <!-- SEO -->
+  <meta name="description" content="Oficjalna strona serwera Minecraft DJFilips. Sprawdź status, graczy online, regulamin i dołącz do gry!">
+  <meta name="keywords" content="DJFilips, minecraft, serwer minecraft, falix, minecraft survival">
+  <meta name="author" content="DJFilips">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 40px;
+      background: linear-gradient(160deg, #020617, #0f172a);
+      color: #e5e7eb;
     }
-    .box {
+
+    header {
+      text-align: center;
+      padding: 30px;
+    }
+
+    header img {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      background: #020617;
+      padding: 12px;
+    }
+
+    nav button {
       background: #1e293b;
-      padding: 25px;
-      border-radius: 14px;
-      max-width: 420px;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background: #38bdf8;
+      color: black;
+    }
+
+    .section {
+      display: none;
+      padding: 30px;
+      max-width: 800px;
       margin: auto;
     }
+
+    .active {
+      display: block;
+    }
+
+    .box {
+      background: #020617;
+      padding: 20px;
+      border-radius: 14px;
+      margin-top: 20px;
+    }
+
     .online { color: #22c55e; font-weight: bold; }
     .offline { color: #ef4444; font-weight: bold; }
-    button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      background: #38bdf8;
-      cursor: pointer;
-      font-size: 16px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 5px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
+<header>
+  <!-- LOGO -->
+  <img src="logo.png" alt="DJFilips logo" onerror="this.style.display='none'">
   <h1>🎮 DJFilips</h1>
-  <p>IP serwera Minecraft:</p>
-  <h2 id="ip">djfilips.falixsrv.me</h2>
+  <p>IP: <b>djfilips.falixsrv.me</b></p>
+</header>
 
-  <button onclick="copyIP()">📋 Skopiuj IP</button>
+<nav>
+  <button onclick="show('home')">Strona główna</button>
+  <button onclick="show('rules')">Regulamin</button>
+  <button onclick="show('discord')">Discord</button>
+  <button onclick="show('shop')">Sklep</button>
+</nav>
 
-  <br><br>
-
+<!-- STRONA GŁÓWNA -->
+<div id="home" class="section active">
   <div class="box">
-    <p>Status: <span id="status">Sprawdzanie...</span></p>
-    <p>Gracze online: <span id="players">---</span></p>
+    <p>Status serwera: <span id="status">Sprawdzanie...</span></p>
+    <p>Gracze: <span id="players">---</span></p>
   </div>
 
-  <script>
-    function copyIP() {
-      navigator.clipboard.writeText("djfilips.falixsrv.me");
-      alert("IP skopiowane!");
-    }
+  <div class="box">
+    <h3>🧑‍🤝‍🧑 Gracze online</h3>
+    <ul id="playerList">
+      <li>Brak danych</li>
+    </ul>
+  </div>
+</div>
 
-    fetch("https://api.mcsrvstat.us/2/djfilips.falixsrv.me")
-      .then(r => r.json())
-      .then(data => {
-        if (data.online) {
-          document.getElementById("status").innerHTML =
-            "<span class='online'>ONLINE</span>";
-          document.getElementById("players").innerText =
-            data.players.online + " / " + data.players.max;
+<!-- REGULAMIN -->
+<div id="rules" class="section">
+  <h2>📜 Regulamin</h2>
+  <ul>
+    <li>✔ Zakaz cheatów</li>
+    <li>✔ Szanuj innych graczy</li>
+    <li>✔ Zakaz griefingu</li>
+    <li>✔ Administracja ma zawsze rację 😉</li>
+  </ul>
+</div>
+
+<!-- DISCORD -->
+<div id="discord" class="section">
+  <h2>💬 Discord</h2>
+  <p>Dołącz do naszego Discorda:</p>
+  <p><b>(tu wstaw swój link)</b></p>
+</div>
+
+<!-- SKLEP -->
+<div id="shop" class="section">
+  <h2>🛒 Sklep</h2>
+  <p>Sklep będzie dostępny wkrótce 👀</p>
+</div>
+
+<footer>
+  © DJFilips • Serwer Minecraft
+</footer>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  fetch("https://api.mcsrvstat.us/2/djfilips.falixsrv.me")
+    .then(r => r.json())
+    .then(data => {
+      if (data.online) {
+        document.getElementById("status").innerHTML =
+          "<span class='online'>ONLINE</span>";
+        document.getElementById("players").innerText =
+          data.players.online + " / " + data.players.max;
+
+        const list = document.getElementById("playerList");
+        list.innerHTML = "";
+
+        if (data.players.list) {
+          data.players.list.forEach(p => {
+            const li = document.createElement("li");
+            li.textContent = "👤 " + p;
+            list.appendChild(li);
+          });
         } else {
-          document.getElementById("status").innerHTML =
-            "<span class='offline'>OFFLINE</span>";
-          document.getElementById("players").innerText = "0 / 0";
+          list.innerHTML = "<li>Brak graczy online</li>";
         }
-      });
-  </script>
+      } else {
+        document.getElementById("status").innerHTML =
+          "<span class='offline'>OFFLINE</span>";
+        document.getElementById("players").innerText = "0 / 0";
+        document.getElementById("playerList").innerHTML = "<li>Serwer offline</li>";
+      }
+    });
+</script>
 
 </body>
 </html>
