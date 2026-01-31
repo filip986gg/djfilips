@@ -2,11 +2,14 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>DJFilips • Serwer Minecraft</title>
+  <title>DJFilips • Minecraft Server</title>
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <!-- SEO -->
-  <meta name="description" content="Oficjalna strona serwera Minecraft DJFilips. Sprawdź status, graczy online, regulamin i dołącz do gry!">
-  <meta name="keywords" content="DJFilips, minecraft, serwer minecraft, falix, minecraft survival">
+  <meta name="description" content="Serwer Minecraft DJFilips – Survival, Eventy, sklep Buycraft, gracze online. Dołącz już teraz!">
+  <meta name="keywords" content="DJFilips, minecraft, serwer minecraft, survival, event">
   <meta name="author" content="DJFilips">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,7 +17,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(160deg, #020617, #0f172a);
+      background: radial-gradient(circle at top, #020617, #000);
       color: #e5e7eb;
     }
 
@@ -25,15 +28,21 @@
 
     header img {
       width: 120px;
-      margin-bottom: 10px;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 5px #38bdf8); }
+      to   { filter: drop-shadow(0 0 20px #38bdf8); }
     }
 
     nav {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 10px;
       background: #020617;
       padding: 12px;
+      flex-wrap: wrap;
     }
 
     nav button {
@@ -43,17 +52,26 @@
       padding: 10px 16px;
       border-radius: 8px;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     nav button:hover {
       background: #38bdf8;
       color: black;
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #38bdf8;
+    }
+
+    .lang {
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
 
     .section {
       display: none;
       padding: 30px;
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
     }
 
@@ -66,19 +84,24 @@
       padding: 20px;
       border-radius: 14px;
       margin-top: 20px;
+      box-shadow: 0 0 15px #020617;
+    }
+
+    .mode {
+      background: #020617;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 10px;
+      transition: 0.2s;
+    }
+
+    .mode:hover {
+      box-shadow: 0 0 20px #22c55e;
+      transform: scale(1.02);
     }
 
     .online { color: #22c55e; font-weight: bold; }
     .offline { color: #ef4444; font-weight: bold; }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      padding: 5px 0;
-    }
 
     footer {
       text-align: center;
@@ -90,61 +113,61 @@
 </head>
 <body>
 
+<div class="lang">
+  <button onclick="setLang('pl')">PL</button>
+  <button onclick="setLang('en')">EN</button>
+</div>
+
 <header>
-  <!-- LOGO -->
   <img src="logo.png" alt="DJFilips logo" onerror="this.style.display='none'">
   <h1>🎮 DJFilips</h1>
-  <p>IP: <b>djfilips.falixsrv.me</b></p>
+  <p id="ip">IP: <b>djfilips.falixsrv.me</b></p>
 </header>
 
 <nav>
-  <button onclick="show('home')">Strona główna</button>
-  <button onclick="show('rules')">Regulamin</button>
-  <button onclick="show('discord')">Discord</button>
+  <button onclick="show('home')">Home</button>
+  <button onclick="show('modes')">Tryby</button>
   <button onclick="show('shop')">Sklep</button>
+  <button onclick="show('discord')">Discord</button>
 </nav>
 
-<!-- STRONA GŁÓWNA -->
 <div id="home" class="section active">
   <div class="box">
-    <p>Status serwera: <span id="status">Sprawdzanie...</span></p>
+    <p>Status: <span id="status">...</span></p>
     <p>Gracze: <span id="players">---</span></p>
   </div>
+</div>
 
-  <div class="box">
-    <h3>🧑‍🤝‍🧑 Gracze online</h3>
-    <ul id="playerList">
-      <li>Brak danych</li>
-    </ul>
+<div id="modes" class="section">
+  <h2>🎮 Tryby serwera</h2>
+
+  <div class="mode">
+    <h3>🌍 Survival</h3>
+    <p>Klasyczny survival z eventami i ekonomią.</p>
+  </div>
+
+  <div class="mode">
+    <h3>🎉 Event</h3>
+    <p>Eventy PvP, parkour i zabawy z nagrodami.</p>
   </div>
 </div>
 
-<!-- REGULAMIN -->
-<div id="rules" class="section">
-  <h2>📜 Regulamin</h2>
-  <ul>
-    <li>✔ Zakaz cheatów</li>
-    <li>✔ Szanuj innych graczy</li>
-    <li>✔ Zakaz griefingu</li>
-    <li>✔ Administracja ma zawsze rację 😉</li>
-  </ul>
-</div>
-
-<!-- DISCORD -->
-<div id="discord" class="section">
-  <h2>💬 Discord</h2>
-  <p>Dołącz do naszego Discorda:</p>
-  <p><b>(tu wstaw swój link)</b></p>
-</div>
-
-<!-- SKLEP -->
 <div id="shop" class="section">
   <h2>🛒 Sklep</h2>
-  <p>Sklep będzie dostępny wkrótce 👀</p>
+  <p>Kup rangi i przedmioty:</p>
+  <a href="https://TWOJSKLEP.buycraft.net" target="_blank">
+    👉 Przejdź do sklepu
+  </a>
+</div>
+
+<div id="discord" class="section">
+  <h2>💬 Discord</h2>
+  <p>Dołącz do community:</p>
+  <p><b>TU WSTAW LINK</b></p>
 </div>
 
 <footer>
-  © DJFilips • Serwer Minecraft
+  © DJFilips • Minecraft Server
 </footer>
 
 <script>
@@ -153,32 +176,19 @@
     document.getElementById(id).classList.add('active');
   }
 
+  function setLang(lang) {
+    alert("Wersja " + lang.toUpperCase() + " – możesz później dodać pełne tłumaczenia 😄");
+  }
+
   fetch("https://api.mcsrvstat.us/2/djfilips.falixsrv.me")
     .then(r => r.json())
     .then(data => {
       if (data.online) {
-        document.getElementById("status").innerHTML =
-          "<span class='online'>ONLINE</span>";
-        document.getElementById("players").innerText =
-          data.players.online + " / " + data.players.max;
-
-        const list = document.getElementById("playerList");
-        list.innerHTML = "";
-
-        if (data.players.list) {
-          data.players.list.forEach(p => {
-            const li = document.createElement("li");
-            li.textContent = "👤 " + p;
-            list.appendChild(li);
-          });
-        } else {
-          list.innerHTML = "<li>Brak graczy online</li>";
-        }
+        status.innerHTML = "<span class='online'>ONLINE</span>";
+        players.innerText = data.players.online + " / " + data.players.max;
       } else {
-        document.getElementById("status").innerHTML =
-          "<span class='offline'>OFFLINE</span>";
-        document.getElementById("players").innerText = "0 / 0";
-        document.getElementById("playerList").innerHTML = "<li>Serwer offline</li>";
+        status.innerHTML = "<span class='offline'>OFFLINE</span>";
+        players.innerText = "0 / 0";
       }
     });
 </script>
