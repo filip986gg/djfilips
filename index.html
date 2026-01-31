@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>DJFilips • Serwer Minecraft</title>
+  <meta name="description" content="Oficjalna strona serwera Minecraft DJFilips">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+    .box {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 14px;
+      max-width: 420px;
+      margin: auto;
+    }
+    .online { color: #22c55e; font-weight: bold; }
+    .offline { color: #ef4444; font-weight: bold; }
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #38bdf8;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎮 DJFilips</h1>
+  <p>IP serwera Minecraft:</p>
+  <h2 id="ip">djfilips.falixsrv.me</h2>
+
+  <button onclick="copyIP()">📋 Skopiuj IP</button>
+
+  <br><br>
+
+  <div class="box">
+    <p>Status: <span id="status">Sprawdzanie...</span></p>
+    <p>Gracze online: <span id="players">---</span></p>
+  </div>
+
+  <script>
+    function copyIP() {
+      navigator.clipboard.writeText("djfilips.falixsrv.me");
+      alert("IP skopiowane!");
+    }
+
+    fetch("https://api.mcsrvstat.us/2/djfilips.falixsrv.me")
+      .then(r => r.json())
+      .then(data => {
+        if (data.online) {
+          document.getElementById("status").innerHTML =
+            "<span class='online'>ONLINE</span>";
+          document.getElementById("players").innerText =
+            data.players.online + " / " + data.players.max;
+        } else {
+          document.getElementById("status").innerHTML =
+            "<span class='offline'>OFFLINE</span>";
+          document.getElementById("players").innerText = "0 / 0";
+        }
+      });
+  </script>
+
+</body>
+</html>
